@@ -24,11 +24,11 @@ After uploaded, start the Serial Monitor, point the IR remote on the receiver, p
 
 ## STEP 3
 
-Edit source code. Change your SSID, Passphrase, and other variables. If you have followed Step 2, change codes in the "IR Remote commands" section. Note: in this case you must change also the second parameter in the irsend.sendRaw functions in the handleSubmit() function. The second parameter is the array length of the command. Example:
+Edit source code. Change your SSID, Passphrase, and other variables. If you have followed Step 2, change codes in the "IR Remote commands" section. Note: in this case you must change also the second parameter in the `irsend.sendRaw` functions in the `handleSubmit()` function. The second parameter is the array length of the command. Example:
 
-My Toggle (ON/OFF) command, contained in the TOGGLE[] array, is 21 bytes long and works with a modulation at 38KHz, so the irsend command is:
+My Toggle (ON/OFF) command, contained in the `TOGGLE[]` array, is 21 bytes long and works with a modulation at 38KHz, so the irsend command is:
 
-irsend.sendRaw(TOGGLE, 21, 38); //21=21 bytes long, 38=38KHz
+`irsend.sendRaw(TOGGLE, 21, 38); //21=21 bytes long, 38=38KHz`
 
 ## STEP 4
 
