@@ -1,22 +1,22 @@
-# Pellet-Stove-Web-Control
+# Pellet Stove Web Control
 
 Remote web control for some models of Pellet Stoves. I've developed it for my stove (an Ungaro Maia Blend 34) but I think will work on other stoves based on Micronova controller board. It is a non-invasive circuit since uses the infrared control.
 
 Source code is for the NodeMCU Devkit (ESP8266 based) programmed with Arduino IDE.
 
-![webpage](https://github.com/Cyb3rn0id/ESP8266_experiments/blob/master/PelletStoveControl/docs/webpage1.png)
+![webpage](https://github.com/Cyb3rn0id/Pellet-Stove-Web-Control/blob/master/images/_overview.jpg)
 
 ## STEP 1
 
-In the Arduino IDE install first the required libraries:
+In the Arduino IDE install first the required libraries you can do this in the Menù Sketch -> #include library -> Library management. Type the library name and select the correct library from the list, then push "Install" button.
 
-* OneWire => https://www.pjrc.com/teensy/td_libs_OneWire.html
-* DallasTemperature => https://github.com/milesburton/Arduino-Temperature-Control-Library
-* IRremoteESP8266 => https://github.com/markszabo/IRremoteESP8266 by Markszabo
+*OneWire (by Paul Stoffregen) => https://www.pjrc.com/teensy/td_libs_OneWire.html 
+*DallasTemperature (by Miles Burton) => https://github.com/milesburton/Arduino-Temperature-Control-Library 
+*IRremoteESP8266 (by Mark Szabo) => https://github.com/markszabo/IRremoteESP8266 
 
 ## STEP 2
 
-Note: This step is only required if the IR remote command of your stove is different than mine (please see pictures in the images folder).
+Note: This step is only required if the IR remote command of your stove is different than mine (please see pictures in the images folder for the remote command reference).
 
 Mount an 38KHz IR receiver as showed in the schematic (documents folder) and then upload the "IRrecvDumpV2.ino" sketch in the IRremoteESP8266 example folder.
 
