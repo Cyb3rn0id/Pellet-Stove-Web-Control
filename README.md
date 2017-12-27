@@ -10,9 +10,9 @@ Source code is for the NodeMCU Devkit (ESP8266 based) programmed with Arduino ID
 
 In the Arduino IDE install first the required libraries you can do this in the Menù Sketch -> #include library -> Library management. Type the library name and select the correct library from the list, then push "Install" button.
 
-*OneWire (by Paul Stoffregen) => https://www.pjrc.com/teensy/td_libs_OneWire.html 
-*DallasTemperature (by Miles Burton) => https://github.com/milesburton/Arduino-Temperature-Control-Library 
-*IRremoteESP8266 (by Mark Szabo) => https://github.com/markszabo/IRremoteESP8266 
+* OneWire (by Paul Stoffregen) => https://www.pjrc.com/teensy/td_libs_OneWire.html 
+* DallasTemperature (by Miles Burton) => https://github.com/milesburton/Arduino-Temperature-Control-Library 
+* IRremoteESP8266 (by Mark Szabo) => https://github.com/markszabo/IRremoteESP8266 
 
 ## STEP 2
 
