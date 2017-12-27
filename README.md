@@ -32,7 +32,7 @@ My Toggle (ON/OFF) command, contained in the `TOGGLE[]` array, is 21 bytes long 
 
 ## STEP 4
 
-Point the IR led of your circuit on the receiver of the stove and try to connect to board with your phone, a pin is required first than send any command, default one is 1234, you can change it in the pinPs variable.
+Point the IR led of your circuit on the receiver of the stove and try to connect to board with your phone, a pin is required first than send any command, default one is 1234, you can change it in the `pinPs` variable.
 
 ## STEP 5
 
