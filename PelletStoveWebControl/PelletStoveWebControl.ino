@@ -275,7 +275,7 @@ String Index_Html(void)
 	"</form></div>"
 	"</div>"
         "<div class=\"sm\">&copy;2017 Giovanni Bernardo</div>"
- 	"</body onLoad=\"getValues()\">"
+ 	"</body>"
 	"</html>";
 	
 	// greater webpages can be sent using following method:
