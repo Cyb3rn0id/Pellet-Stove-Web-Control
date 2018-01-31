@@ -125,13 +125,6 @@ String pinPs="1234"; // your *numeric* pin/password for accessing the page
 // Milliseconds for "stay alive" cochlea running
 #define msCo  12000L
 
-// Path to Favicons
-// images must be named as:
-// stove.ico, stove192.png, stove180.png, stove270.png (stove192.png is a 192x192 image etc.)
-// function "Index_Html" will only add the trailing part of file name (.ico / 192.png etc)
-// example images are included in the repository
-String strImgPath="http://www.[YOURPATH].com/[TO_ICONS]/stove";
-
 // Page title
 String pageTitle="Stove";
 
@@ -231,14 +224,6 @@ String clientIP(void)
 
 // Return HTML page
 // every button is a "Submit"-type button
-// Infos on shortcut icons:
-// -General infos:: https://stackoverflow.com/questions/25952907/favicon-ico-vs-link-rel-shortcut-icon
-// -General infos: http://bradymower.com/create-ios-android-shortcut-icon-for-website/
-// -Standard method: http://www.w3schools.com/tags/att_link_rel.asp
-// -(Non standard? Maybe for IE<9) Alternative method: https://www.w3.org/wiki/More_about_the_document_head
-// -Microsoft Windows >=8.1 https://blogs.msdn.microsoft.com/ie/2012/06/08/high-quality-visuals-for-pinned-sites-in-windows-8/
-// -Apple: https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
-// -Android: I think use the standard method with a PNG image
 String Index_Html(void)
 	{
  	return
@@ -247,53 +232,49 @@ String Index_Html(void)
 	"<head>"
 	"<title>"+pageTitle+"</title>"
 	"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\">"
-	"<link rel=\"shortcut icon\" href=\""+strImgPath+".ico\">"
-  "<link rel=\"icon\" type=\"image/png\" sizes=\"192x192\" href=\""+strImgPath+"192.png\">"
-  "<meta name=\"msapplication-TileImage\" content=\""+strImgPath+"270.png\">"
-  "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\""+strImgPath+"180.png\">"
 	"<style type=\"text/css\">"
 	"body{font-family:arial; font-size:15pt; font-weight:bold;}\n"
 	".bu{font-family:arial; font-weight:bold; font-size:27pt; color:#ffffff; text-align:center; padding:7px; margin:3px; border:0; border-radius:15px; box-shadow:0 8px #666666; outline:none;}\n"
 	".bu:active{box-shadow:0 3px #333333; transform:translateY(4px);}\n"
 	".tx{font-family:arial; font-size:26pt; text-align:left; padding:8px; margin:4px; border:2px #c9c9c9 solid; border-radius:15px;}\n"
-  ".sm {color:#585858; text-decoration:none; font-family:tahoma,arial; font-size:12pt; font-weight:normal; font-variant:small-caps; text-align:center; padding:8px; margin-top:10px; display:block;}\n"
+        ".sm {color:#585858; text-decoration:none; font-family:tahoma,arial; font-size:12pt; font-weight:normal; font-variant:small-caps; text-align:center; padding:8px; margin-top:10px; display:block;}\n"
 	"</style>"
-  "<script language=\"javascript\">\n"
-  "xmlhttp=null;\n"
-  "var sensorValues=[];\n"
-  "function getValues()\n"
-  "{"
-  "setTimeout('getValues()', 2000);\n"
-  "if (window.XMLHttpRequest)\n"
-  "{xmlhttp=new XMLHttpRequest();}\n"
-  "else\n"
-  "{xmlhttp=new ActiveXObject('Microsoft.XMLHTTP');}\n"
-  "xmlhttp.open('GET','/getValues',false);\n"
-  "xmlhttp.send(null);\n"
-  "if (xmlhttp.responseText!=\"\")\n"
-  "{sensorValues = xmlhttp.responseText.split(\",\");\n"
-  "document.getElementById(\"te\").innerHTML=sensorValues[0];\n"
-  "document.getElementById(\"status\").innerHTML=sensorValues[1];\n"
-  "}\n"
-  "}</script>"
+        "<script language=\"javascript\">\n"
+        "xmlhttp=null;\n"
+        "var sensorValues=[];\n"
+        "function getValues()\n"
+        "{"
+        "setTimeout('getValues()', 2000);\n"
+        "if (window.XMLHttpRequest)\n"
+        "{xmlhttp=new XMLHttpRequest();}\n"
+        "else\n"
+        "{xmlhttp=new ActiveXObject('Microsoft.XMLHTTP');}\n"
+        "xmlhttp.open('GET','/getValues',false);\n"
+        "xmlhttp.send(null);\n"
+        "if (xmlhttp.responseText!=\"\")\n"
+        "{sensorValues = xmlhttp.responseText.split(\",\");\n"
+        "document.getElementById(\"te\").innerHTML=sensorValues[0];\n"
+        "document.getElementById(\"status\").innerHTML=sensorValues[1];\n"
+        "}\n"
+        "}</script>"
 	"</head>"
 	"<body onLoad=\"getValues()\">"
 	"<div style=\"text-align:center\">"
 	"<div>CONTROLLO REMOTO STUFA</div>"
-  "<div class=\"sm\" id=\"status\" style=\"font-weight:bold\">"+getStoveWorking()+"</div>"
+        "<div class=\"sm\" id=\"status\" style=\"font-weight:bold\">"+getStoveWorking()+"</div>"
 	"<div class=\"bu\" id=\"te\" style=\"background-color:#996633; width:93%\">"+getTemp()+"</div><br/>"
-  "<div><form action=\"/\" method=\"post\">"
+        "<div><form action=\"/\" method=\"post\">"
 	"<input type=\"submit\" name=\"submit\" value=\"ON/OFF\" class=\"bu\" style=\"background-color:#ff6600; width:98%\"><br/><br/>"
 	"<input type=\"submit\" name=\"submit\" value=\"Pow +\" class=\"bu\" style=\"background-color:#00FF00; width:47%;\">"
 	"<input type=\"submit\" name=\"submit\" value=\"Temp +\" class=\"bu\" style=\"background-color:#0099FF; width:47%; float:right;\"><br/><br/>"
 	"<input type=\"submit\" name=\"submit\" value=\"Pow -\" class=\"bu\" style=\"background-color:#00CC00; width:47%;\">"
 	"<input type=\"submit\" name=\"submit\" value=\"Temp -\" class=\"bu\" style=\"background-color:#0099AA; width:47%; float:right;\"><br/>"
 	"<span class=\"sm\">Password:</span>"
-  "<input type=\"hidden\" name=\"username\" value=\""+clientIP()+"\">"
-  "<input type=\"number\" name=\"password\" class=\"tx\" style=\"-webkit-text-security:disc; width:93%;\" pattern=\"[0-9]*\" inputmode=\"numeric\">"
+        "<input type=\"hidden\" name=\"username\" value=\""+clientIP()+"\">"
+        "<input type=\"number\" name=\"password\" class=\"tx\" style=\"-webkit-text-security:disc; width:93%;\" pattern=\"[0-9]*\" inputmode=\"numeric\">"
 	"</form></div>"
 	"</div>"
-  "<div class=\"sm\">&copy;2017 Giovanni Bernardo</div>"
+        "<div class=\"sm\">&copy;2017 Giovanni Bernardo</div>"
  	"</body onLoad=\"getValues()\">"
 	"</html>";
 	
