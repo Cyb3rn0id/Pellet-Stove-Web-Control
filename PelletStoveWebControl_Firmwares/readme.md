@@ -1,7 +1,7 @@
 Upload firmwares in bin format using esp8266_flasher.exe in Tools folder.
 Firmware names follows this schema:
 
-aaaa_bbb_ccc.ino
+aaaa_bbb_ccc.bin
 
 aaaa = firmware version
 bbb  = remote command model
