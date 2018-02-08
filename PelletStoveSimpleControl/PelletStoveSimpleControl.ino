@@ -106,7 +106,7 @@ const char* ssid = "[YOUR SSID]";
 const char* password = "[YOUR PASSPHRASE]";
 
 // Page password
-String pinPs="1234"; // your *numeric* pin/password for accessing the page
+String pinPs="1234"; // your *numeric* pin/password for accessing the page, leave blank if you don't want a pin
 
 // Analog Threshold for detecting cochlea running
 #define AnalogTH 85
@@ -120,7 +120,7 @@ String pinPs="1234"; // your *numeric* pin/password for accessing the page
 // data used for static IP configuration
 #ifdef USE_STATIC_IP
   IPAddress subnet(255,255,255,0);
-  IPAddress ip(192,168,1,31);
+  IPAddress ip(192,168,1,31); // board address
   IPAddress gateway(192,168,1,1); // router address
 #endif
 
@@ -129,8 +129,8 @@ ESP8266WebServer server(80);
 // user for controlling stove running, an inductive sensor
 // is mounted around a cable of the cochlea motor
 unsigned long LastTimeRunning=0;
-String MsgStoveOn="STOVE IS <span style=\"color:#33cc00;\">WORKING</span>"; // message for "stove is working  
-String MsgStoveOff="STOVE IS <span style=\"color:#FF3300;\">STOPPED</span>"; // message for "stove is stopped"
+String MsgStoveOn="La stufa &egrave; <span style=\"color:#33cc00;\">IN FUNZIONE</span>"; // message for "stove is working  
+String MsgStoveOff="La stufa &egrave; <span style=\"color:#FF3300;\">FERMA</span>"; // message for "stove is stopped"
 
 // IR remote commands obtained with IRrecvDumpV2.ino for Ungaro Maia 34 Blend pellet stove (Micronova controller board)
 // those codes may work on other Micronova controllers that have the 4 buttons remote
@@ -229,34 +229,32 @@ String Index_Html(void)
   "<title>Stufa</title>"
   "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\">"
   "<style type=\"text/css\">"
-  "body{font-family:arial; font-size:15pt; font-weight:bold;}\n"
-  ".bu{font-family:arial; font-weight:bold; font-size:27pt; color:#ffffff; text-align:center; padding:7px; margin:3px; border:0; border-radius:15px; box-shadow:0 8px #666666; outline:none;}\n"
-  ".bu:active{box-shadow:0 3px #333333; transform:translateY(4px);}\n"
-  ".tx{font-family:arial; font-size:26pt; text-align:left; padding:8px; margin:4px; border:2px #c9c9c9 solid; border-radius:15px;}\n"
-  ".sm {color:#585858; text-decoration:none; font-family:tahoma,arial; font-size:12pt; font-weight:normal; font-variant:small-caps; text-align:center; padding:8px; margin-top:10px; display:block;}\n"
+  "body{font-family:arial; font-size:15pt; font-weight:bold;}"
+  ".bu{font-family:arial; font-weight:bold; font-size:27pt; color:#ffffff; text-align:center; padding:7px; border:0; border-radius:15px; box-shadow:0 8px #666666; outline:none; width:100%;}"
+  ".bu:active{box-shadow:0 3px #333333; transform:translateY(4px);}"
+  ".buno{font-family:arial; font-weight:bold; font-size:27pt; color:#ffffff; text-align:center; padding:7px; border:0; border-radius:15px; box-shadow:0 8px #666666; outline:none; background-color:#b63642;}"
+  ".tx{font-family:arial; font-size:26pt; text-align:left; padding:8px; border:2px #c9c9c9 solid; border-radius:15px;}"
+  ".sm{color:#585858; text-decoration:none; font-family:tahoma,arial; font-size:10pt; font-weight:normal; font-variant:small-caps; padding:8px; margin-top:10px; display:block;}"
   "</style>"
   "<script language=\"javascript\">function getValues(){var sensorValues=[];var xhr=new XMLHttpRequest();xhr.open('GET','/values.txt',true);xhr.onload=function(){if (xhr.readyState==4 && xhr.status==200){sensorValues=xhr.responseText.split(\",\");document.getElementById(\"temp\").innerHTML=sensorValues[0];document.getElementById(\"stove\").innerHTML=sensorValues[1];}};xhr.send(null);}setInterval('getValues()', 2000);</script>"
   "</head>"
-  "<body onLoad=\"getValues()\">"
-  "<div style=\"text-align:center\">"
-  "<div>CONTROLLO REMOTO STUFA</div>"
+  "<body onload=\"getValues()\">"
+  "<div style=\"text-align:center; min-width:260px; display:inline-block;\">"
+  "<div>Pellet Stove Web Control</div>"
   "<div class=\"sm\" id=\"stove\" style=\"font-weight:bold\">"+getStoveWorking()+"</div>"
-  "<div class=\"bu\" id=\"temp\" style=\"background-color:#996633; width:93%\">"+getTemperature()+"</div><br/>"
-  "<div><form action=\"/\" method=\"post\">"
-  "<input type=\"submit\" name=\"submit\" value=\"ON/OFF\" class=\"bu\" style=\"background-color:#ff6600; width:98%\"><br/><br/>"
-  "<input type=\"submit\" name=\"submit\" value=\"Pow +\" class=\"bu\" style=\"background-color:#00FF00; width:47%;\">"
-  "<input type=\"submit\" name=\"submit\" value=\"Temp +\" class=\"bu\" style=\"background-color:#0099FF; width:47%; float:right;\"><br/><br/>"
-  "<input type=\"submit\" name=\"submit\" value=\"Pow -\" class=\"bu\" style=\"background-color:#00CC00; width:47%;\">"
-  "<input type=\"submit\" name=\"submit\" value=\"Temp -\" class=\"bu\" style=\"background-color:#0099AA; width:47%; float:right;\"><br/>"
-  "<span class=\"sm\">Password:</span>"
-  "<input type=\"hidden\" name=\"username\" value=\""+clientIP()+"\">"
- "<input type=\"number\" name=\"password\" class=\"tx\" style=\"-webkit-text-security:disc; width:93%;\" pattern=\"[0-9]*\" inputmode=\"numeric\">"
+  "<div class=\"buno\" id=\"temp\">"+getTemperature()+"</div><br/>"
+  "<div><form name=\"f\" method=\"post\">"
+  "<input type=\"submit\" name=\"submit\" value=\"no\" style=\"visibility:hidden; display:none; height:0px; margin:0px;\">"
+  "<input type=\"submit\" name=\"submit\" value=\"ON/OFF\" class=\"bu\" style=\"background-color:#ff6600;\"><br/><br/>"
+  "<input type=\"submit\" name=\"submit\" value=\"Pow +\" class=\"bu\" style=\"background-color:#00FF00; width:50%;\">"
+  "<input type=\"submit\" name=\"submit\" value=\"Temp +\" class=\"bu\" style=\"background-color:#0099FF; width:50%;\"><br/><br/>"
+  "<input type=\"submit\" name=\"submit\" value=\"Pow -\" class=\"bu\" style=\"background-color:#00CC00; width:50%;\">"
+  "<input type=\"submit\" name=\"submit\" value=\"Temp -\" class=\"bu\" style=\"background-color:#0099AA; width:50%;\"><br/>"
+  "<span class=\"sm\"><b>PIN:</b></span>"
+  "<input type=\"hidden\" name=\"username\" value=\"anonymous\">"
+  "<input type=\"number\" name=\"password\" class=\"tx\" style=\"-webkit-text-security:disc; width:93%;\" pattern=\"[0-9]*\" inputmode=\"numeric\">"  
   "</form></div>"
-  "</div>"
-  "<div class=\"sm\">&copy;2017 Giovanni Bernardo</div>"
-  "</body>"
-  "</html>";
-  
+  "<div class=\"sm\">&copy;2018 GIOVANNI BERNARDO</div></div></body></html>";
   // greater webpages can be sent using following method:
   // taken from https://github.com/esp8266/Arduino/issues/3205
   // server.setContentLength(HTML_PART_1().length() + HTML_PART_2().length());   (or hardcode the length)
@@ -349,9 +347,17 @@ void returnFail(String msg)
 void handleSubmit()
   {
   if (!server.hasArg("submit")) return returnFail("BAD ARGS");
-  // check password
-  if (server.arg("password")!=pinPs) return returnFail("BAD PASSWORD");
+  // check pin, if a pin is defined
+  if (pinPs!='\0')
+  {
+  if (server.arg("password")!=pinPs) return returnFail("PIN Errato!");
+  }
+  // check if user pressed "go" on keyboard
   String toExec=server.arg("submit");
+  if (toExec=="no")
+    {
+    return returnFail("Non devi premere invio, ma un pulsante!");  
+    }
   Serial.println(toExec+" command requested");
   if (toExec=="ON/OFF")
     {
