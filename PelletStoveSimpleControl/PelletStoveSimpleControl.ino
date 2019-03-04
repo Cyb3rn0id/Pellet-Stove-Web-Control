@@ -6,8 +6,9 @@ Copyright (c) 2017 Giovanni Bernardo (CYB3rn0id)
 http://www.settorezero.com
 http://www.facebook.com/settorezero
 http://www.twitter.com/settorezero
+
 DESCRIPTION
------------
+----------------------------------------------------
 This application runs on an NodeMCU Devkit connected via Wi-Fi in a local network 
 and make same functions such the original IR remote command.
 You can turn on/off the stove, set the power and water temperature.
@@ -15,53 +16,68 @@ You can read the ambient temperature too and check if the stove is working or no
 Page is pin/password protected.
 Maybe works on every stove that has a Micronova controller board with double led 
 display and an IR remote with 4 buttons
+
 PREREQUISITES
-------------- 
-(libraries to be installed first : Menù Sketch -> #include library -> Library management)
+----------------------------------------------------
+(libraries to be installed first : Menu Sketch -> #include library -> Library management)
 - OneWire (by Paul Stoffregen) => https://www.pjrc.com/teensy/td_libs_OneWire.html 
 - DallasTemperature (by Miles Burton) => https://github.com/milesburton/Arduino-Temperature-Control-Library 
 - IRremoteESP8266 (by Mark Szabo) => https://github.com/markszabo/IRremoteESP8266 
+
 SETTINGS for Arduino IDE for use with NodeMCU Devkit
 ----------------------------------------------------
+*: is the default setting on Arduino IDE, so you must not change
+I've reported default settings only in case you change one accidentally
+!: is the setting you must change, so you can focus only on it!
+
 Board:              Generic ESP8266 Module
-Flash mode:         DIO
-Flash frequency:    40MHz
-CPU frequency:      80MHz
-Flash size:         4M (3M SPIFFS)
-Reset method:       nodemcu
-Upload speed:       115200
+Upload speed:       115200*
+CPU frequency:      80MHz*
+Flash frequency:    40MHz*
+Flash mode:       ! DIO
+Flash size:       ! 4M (3M SPIFFS)
+Crystal Frequency:  26MHz*
+Reset method:     ! nodemcu
+Debug port:         disabled*
+Debug level:        none*
+IwIP variant:       v2 lower memory*
+Vtables:            flash*
+Exceptions:         disabled*
+Builtin Led:        2*
+Erase Flash:        Only sketch*
+
 NOTE on NodeMCU Analog input
-----------------------------
+----------------------------------------------------
 NodeMCU Devkit has a voltage divider on Analog input of ESP8266.
 On a bare ESP8266 module you cannot give more than 1V on analog input
 On NodeMCU devkit, since the voltage divider,
 you can give up to 3.3V (3.3V = reading of 1024).
+
 NOTE on NodeMCU Powering
-------------------------
+----------------------------------------------------
 The NodeMCU devkit has an on-board 3.3V voltage regulator.
 You can power NodeMCU devkit using the microUSB connector. In this case
 you can obtain a 5V voltage on "VU" pin (in this project 5V is used for powering
 the Active Buzzer).
 OR you can power NodeMCU giving 5V on VIN pin (in this case you'll obtain the 5V
 from this pin).
-MIT License
------------
-Copyright (c) 2017 Giovanni Bernardo
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+
+LICENSE
+----------------------------------------------------
+Copyright (c)2019 Giovanni Bernardo
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+ 
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <ESP8266WiFi.h>
@@ -73,16 +89,17 @@ SOFTWARE.
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-/* 
+/*
+NodeMCU to Arduino GPIO pinout
 #define D0  16
 #define D1   5      // SCL
 #define D2   4      // SDA
-#define D3   0
-#define D4   2
+#define D3   0		// (has pullup => does not connect anything that pulls this pin low at startup!)
+#define D4   2		// OnBoard LED (led act as pullup => does not connect anything that pulls this pin low at startup!)
 #define D5  14
 #define D6  12
 #define D7  13
-#define D8  15      // Problems using this I/O (code upload fails!)
+#define D8  15      // (has pulldown => does not connect anything that pulls this pin high at startup!)
 #define D9   3      // RX
 #define D10  1      // TX
 */
