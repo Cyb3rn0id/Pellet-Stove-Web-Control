@@ -12,5 +12,3 @@ ccc  = remote command revision
 Remote command models:
 
 001 = Micronova (used on Ungaro pellet stoves)
-
-002 = Ecoforest
